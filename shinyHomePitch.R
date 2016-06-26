@@ -55,8 +55,8 @@ forecasts <- data.frame(timePeriod, fcastARIMA,	fcastETS,fcastNAIVE, fcastNEURAL
 names(forecasts) <- vars
 forecasts <- melt(forecasts, id = "TIME")
 names(forecasts) <- c("Time", "Model", "Value")
-print(head(forecasts))
-print(unique(forecasts$Model))
+save(forecasts, file = "forecasts.RData")
+
 # Plot Forecast
 p <- nPlot(Value ~ Time, group = "Model", type = "lineChart", data = forecasts)
 p$xAxis(
@@ -85,9 +85,10 @@ fcastNAIVE  <- fcastNAIVE[length(fcastNAIVE)]
 #Plot end of period.
 prediction <- as.vector(c(fcastARIMA,	fcastETS,	fcastNAIVE, fcastNEURAL,	fcastBATS, fcastTBATS,	fcastSTLM,	fcastSTS))
 models <- c("Arima", "ETS", "Naive", "Neural", "BATS", "TBATS", "STLM", "STS")
-d <- data.frame(models, prediction)
-colnames(d) <- c("Model","Prediction")
-p <- nPlot(Prediction~Model, data = d, type = "discreteBarChart", dom = "predictionPlot", height = 400, width = 600)
+prediction <- data.frame(models, prediction)
+colnames(prediction) <- c("Model","Prediction")
+save(prediction, file = "prediction.RData")
+p <- nPlot(Prediction~Model, data = prediction, type = "discreteBarChart", dom = "predictionPlot", height = 400, width = 600)
 p$set(title = "Predicted Median Home Values at End of Forecast Period")
 p$xAxis(staggerLabels = TRUE)
 p$yAxis(tickFormat = "#! function(d) {return d3.format(',.0f')(d)} !#")

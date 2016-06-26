@@ -46,7 +46,7 @@ Select a market, create training and test sets, then train eight of the most ack
 Execute forecasts and compare predictions among the algorithms.  This is the 10 year forecast of median home values for San Francisco, California for each of the predictional algorithms. On the right, we have the predicted prices on Jan 1, 2026 for each of the models.
 
 *** {name: left}
-<iframe src=' assets/fig/forecast-1.html ' scrolling='no' frameBorder='0' seamless class='rChart nvd3 ' id=iframe- chart243502f6d76f ></iframe> <style>iframe.rChart{ width: 100%; height: 400px;}</style>
+<iframe src=' assets/fig/forecast-1.html ' scrolling='no' frameBorder='0' seamless class='rChart nvd3 ' id=iframe- chart22af075925017 ></iframe> <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 
 *** {name: right}
 <iframe src=' assets/fig/prediction-1.html ' scrolling='no' frameBorder='0' seamless class='rChart nvd3 ' id=iframe- predictionPlot ></iframe> <style>iframe.rChart{ width: 100%; height: 400px;}</style>
