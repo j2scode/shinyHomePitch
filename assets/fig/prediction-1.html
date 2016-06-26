@@ -14,7 +14,7 @@
       display: block;
       margin-left: auto; 
       margin-right: auto;
-      width: 400px;
+      width: 350px;
       height: 400px;
     }  
     </style>
@@ -30,7 +30,7 @@
     function drawpredictionPlot(){  
       var opts = {
  "dom": "predictionPlot",
-"width":    400,
+"width":    350,
 "height":    400,
 "x": "Model",
 "y": "Prediction",
@@ -109,6 +109,7 @@
         
         
         chart.yAxis
+  .tickFormat( function(d) {return d3.format(',.0f')(d)} )
   .axisLabel("($000)")
   .width(    60)
       
