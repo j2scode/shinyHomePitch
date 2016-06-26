@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>shinyHome</title>
+  <title>Introduction to shinyHome</title>
   <meta charset="utf-8">
-  <meta name="description" content="shinyHome">
+  <meta name="description" content="Introduction to shinyHome">
   <meta name="author" content="John James">
   <meta name="generator" content="slidify" />
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,7 +13,9 @@
     media="only screen and (max-device-width: 480px)" >
   <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
   <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
-  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/custom.css"></link>
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/nvd3/css/nv.d3.css"></link>
+<link rel=stylesheet href="libraries/widgets/nvd3/css/rNVD3.css"></link>
+<link rel=stylesheet href="./assets/css/custom.css"></link>
 <link rel=stylesheet href="./assets/css/ribbons.css"></link>
 
   
@@ -24,7 +26,11 @@
     src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
   </script>
   
-  
+  <script src="libraries/widgets/nvd3/js/jquery-1.8.2.min.js"></script>
+<script src="libraries/widgets/nvd3/js/d3.v3.min.js"></script>
+<script src="libraries/widgets/nvd3/js/nv.d3.min-new.js"></script>
+<script src="libraries/widgets/nvd3/js/fisheye.js"></script>
+
 
 </head>
 <body style="opacity: 0">
@@ -33,7 +39,7 @@
     <!-- LOGO SLIDE -->
         <slide class="title-slide segue nobackground">
   <hgroup class="auto-fadein">
-    <h1>shinyHome</h1>
+    <h1>Introduction to shinyHome</h1>
     <h2>Product Pitch</h2>
     <p>John James<br/>Coursera Building Data Products, Data Science Specialization</p>
   </hgroup>
@@ -47,7 +53,7 @@
     <h2>Explore Markets</h2>
   </hgroup>
   <article data-timings="">
-    <p>Build a query of geography, home value price ranges and growth rates, then examine the distribution of home values, and discover the top markets by home value growth and, for the top growth markets, a time series of price movements since 2000.</p>
+    <p>Build a query of geography, home value price ranges and growth rates, then examine the distribution of home values, and discover the top markets by home value growth and, for the top growth markets, a time series of price movements since 2000.  </p>
 
 <div style='text-align: center;'>
     <img height='400' src='http://www.daelmann.com/code/dataScience/shinyHome/images/explorer.png' />
@@ -92,12 +98,16 @@
     <h2>Forecast Home Value Prices</h2>
   </hgroup>
   <article data-timings="">
-    <p>Using each forecast algorithm, predict home value prices for up to 10 years.  Forecast plots will evince predictions with confidence intervals and the summary plot will allow you to compare time series forecasts among the algorithms.</p>
+    <p>Execute forecasts and compare predictions among the algorithms.  This is the 10 year forecast of median home values for San Francisco, California for each of the predictional algorithms. On the right, we have the predicted prices on Jan 1, 2026 for each of the models.</p>
 
-<div style='text-align: center;'>
-    <img height='400' src='http://www.daelmann.com/code/dataScience/shinyHome/images/forecast.png' />
+<div style='float:left;width:48%;' class='centered'>
+  <p><img src="assets/fig/forecast-1.png" alt="plot of chunk forecast"></p>
+
 </div>
+<div style='float:right;width:48%;'>
+  <p><iframe src=' assets/fig/prediction-1.html ' scrolling='no' frameBorder='0' seamless class='rChart nvd3 ' id=iframe- predictionPlot ></iframe> <style>iframe.rChart{ width: 100%; height: 400px;}</style></p>
 
+</div>
   </article>
   <!-- Presenter Notes -->
 </slide>

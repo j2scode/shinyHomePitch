@@ -1,18 +1,30 @@
 ---
-title       : shinyHome
+title       : Introduction to shinyHome
 subtitle    : Product Pitch
 author      : John James
 job         : Coursera Building Data Products, Data Science Specialization
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
-widgets     : []            # {mathjax, quiz, bootstrap}
+widgets     : []
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
+ext_widgets : {rCharts: [libraries/nvd3]}
 
 --- 
+
+```{r environment, echo = FALSE, message = F, eval = T, tidy=TRUE, tidy.opts=list(comment=TRUE)}
+require(rCharts)
+options(RCHART_LIB = 'polycharts')
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(plyr)
+library(rCharts)
+```
+
 ## Explore Markets
-Build a query of geography, home value price ranges and growth rates, then examine the distribution of home values, and discover the top markets by home value growth and, for the top growth markets, a time series of price movements since 2000.
+Build a query of geography, home value price ranges and growth rates, then examine the distribution of home values, and discover the top markets by home value growth and, for the top growth markets, a time series of price movements since 2000.  
 
 <div style='text-align: center;'>
     <img height='400' src='http://www.daelmann.com/code/dataScience/shinyHome/images/explorer.png' />
@@ -36,11 +48,75 @@ Select a market, create training and test sets, then train eight of the most ack
     <img height='400' src='http://www.daelmann.com/code/dataScience/shinyHome/images/train.png' />
 </div>
 
---- 
+--- &twocol
 
 ## Forecast Home Value Prices
-Using each forecast algorithm, predict home value prices for up to 10 years.  Forecast plots will evince predictions with confidence intervals and the summary plot will allow you to compare time series forecasts among the algorithms.
+Execute forecasts and compare predictions among the algorithms.  This is the 10 year forecast of median home values for San Francisco, California for each of the predictional algorithms. On the right, we have the predicted prices on Jan 1, 2026 for each of the models.
 
-<div style='text-align: center;'>
-    <img height='400' src='http://www.daelmann.com/code/dataScience/shinyHome/images/forecast.png' />
-</div>
+*** {name: left}
+```{r forecast, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+## ---- environment
+# Libraries
+library(forecast)
+library(ggplot2)
+## ---- end
+
+# Get Time Series Data
+hviAllCity  = read.csv("./processedData/hviAllCity.csv", header = TRUE, stringsAsFactors = FALSE)
+d <- subset(hviAllCity, StateName == "California" & City == "San Francisco", select = X2000.01:X2015.12)
+d <- d[,]/1000
+v  <- as.numeric(as.vector(d))
+d  <- ts(v, frequency = 12, start = c(2000,1))
+
+# Train Models
+ARIMA = auto.arima(d, ic='aicc', stepwise=FALSE)
+ETS = ets(d, ic='aicc', restrict=FALSE)
+NEURAL = nnetar(d, p=12, size=25)
+TBATS = tbats(d, ic='aicc', seasonal.periods=12)
+BATS = bats(d, ic='aicc', seasonal.periods=12)
+STLM = stlm(d, s.window=12, ic='aicc', robust=TRUE, method='ets')
+STS = StructTS(d, type = "level")
+NAIVE = naive(d, 12)
+
+# Forecast 
+fcastARIMA   <-   forecast(ARIMA, 120)
+fcastETS   <-   forecast(ETS, 120)
+fcastNEURAL   <-   forecast(NEURAL, 120)
+fcastTBATS   <-   forecast(TBATS, 120)
+fcastBATS   <-   forecast(BATS, 120)
+fcastSTLM   <-   forecast(STLM, 120)
+fcastSTS   <-   forecast(STS, 120)
+fcastNAIVE   <-   forecast(NAIVE, 120)
+
+#Plot Forecast
+lgnd <- c("ARIMA", "ETS", "NAIVE", "NEURAL", "BATS", "TBATS", "STLM", "STS")
+forecasts <- ts.union(fcastARIMA$mean,	fcastETS$mean,fcastNAIVE$mean, fcastNEURAL$mean, fcastBATS$mean, fcastTBATS$mean, fcastSTLM$mean,	fcastSTS$mean)
+plot(forecasts, plot.type = "single", col = 1:ncol(forecasts),ylab = "($000)")
+    par(mar = c(2,2,0,2) + 0.1)
+    legend("topleft", lgnd, col = 1:ncol(forecasts), lty = 1)
+```
+
+*** {name: right}
+```{r prediction, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+
+#Get end of period prediction
+fcastARIMA   <-   as.vector(as.numeric(fcastARIMA$mean[length(fcastARIMA$mean)]))
+fcastETS   <-   as.vector(as.numeric(fcastETS$mean[length(fcastETS$mean)]))
+fcastNEURAL   <-   as.vector(as.numeric(fcastNEURAL$mean[length(fcastNEURAL$mean)]))
+fcastTBATS   <-   as.vector(as.numeric(fcastTBATS$mean[length(fcastTBATS$mean)]))
+fcastBATS   <-   as.vector(as.numeric(fcastBATS$mean[length(fcastBATS$mean)]))
+fcastSTLM   <-   as.vector(as.numeric(fcastSTLM$mean[length(fcastSTLM$mean)]))
+fcastSTS   <-   as.vector(as.numeric(fcastSTS$mean[length(fcastSTS$mean)]))
+fcastNAIVE   <-   as.vector(as.numeric(fcastNAIVE$mean[length(fcastNAIVE$mean)]))
+
+#Plot end of period.
+prediction <- as.vector(c(fcastARIMA,	fcastETS,	fcastNAIVE, fcastNEURAL,	fcastBATS, fcastTBATS,	fcastSTLM,	fcastSTS))
+models <- c("Arima", "ETS", "Naive", "Neural", "BATS", "TBATS", "STLM", "STS")
+d <- data.frame(models, prediction)
+colnames(d) <- c("Model","Prediction")
+p <- nPlot(Prediction~Model, data = d, type = "discreteBarChart", dom = "predictionPlot", height = 400, width = 400)
+p$set(title = "Predicted Median Home Values at End of Forecast Period")
+p$xAxis(staggerLabels = TRUE)
+p$yAxis(axisLabel = "($000)", width = 60)
+print(p)
+```
