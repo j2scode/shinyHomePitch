@@ -9,7 +9,6 @@ hitheme     : tomorrow      #
 widgets     : []
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
-ext_widgets : {rCharts: [libraries/nvd3]}
 
 --- 
 ## Explore Markets

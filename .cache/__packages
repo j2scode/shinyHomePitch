@@ -1,0 +1,14 @@
+base
+rCharts
+dplyr
+ggplot2
+plotly
+plyr
+knitr
+kfigr
+printr
+zoo
+timeDate
+forecast
+reshape
+png
