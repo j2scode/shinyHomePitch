@@ -12,84 +12,37 @@ knit        : slidify::knit2slides
 ext_widgets : {rCharts: [libraries/nvd3]}
 
 --- 
-
-```{r environment, echo = FALSE, message = F, eval = T, tidy=TRUE, tidy.opts=list(comment=TRUE)}
-require(rCharts)
-options(RCHART_LIB = 'polycharts')
-library(dplyr)
-library(ggplot2)
-library(plotly)
-library(plyr)
-library(rCharts)
-```
-
 ## Explore Markets
 Explore over 20,000 markets by geography, home value price ranges and growth rates, then examine the distribution of home values, and discover the top markets by home value growth and, for the top growth markets, a time series of price movements since 2000.  
 
-<div style='text-align: center;'>
-    <img height='400' src='http://www.daelmann.com/code/dataScience/shinyHome/images/explorer.png' />
-</div>
+```{r echo = FALSE, out.width = 1000, fig.retina = NULL}
+knitr::include_graphics("./assets/img/explorer.png")
+```
 
 --- 
 
 ## Analyze Markets
 Analyze home value price trends for selected markets. Evaluate non-seasonal price trends and decompose seasonal movements into their trend, seasonal and random components.
 
-<div style='text-align: center;'>
-    <img height='400' src='http://www.daelmann.com/code/dataScience/shinyHome/images/analyzer.png' />
-</div>
+```{r echo = FALSE, out.width = 1000, fig.retina = NULL}
+knitr::include_graphics("./assets/img/analyzer.png")
+```
 
 --- 
 
 ## Train Forecast Models
 Select a market, create training and test sets, then train eight of the most acknowledged time series forecasting algorithms, including Arima, Basic Structural, Naive, Neural Networks, Automated forecasting with exponential smoothing and others. Inspect forecast error statistics to evaluate forecast accuracy of each model.
 
-<div style='text-align: center;'>
-    <img height='400' src='http://www.daelmann.com/code/dataScience/shinyHome/images/train.png' />
-</div>
-
---- &twocol
-
-## Forecast Home Value Prices
-Execute forecasts and compare predictions among the algorithms.  This is the 10 year forecast of median home values for San Francisco, California for each of the predictional algorithms. On the right, we have the predicted prices on Jan 1, 2026 for each of the models.
-
-*** {name: left}
-```{r forecast, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
-# Libraries
-library(rCharts)
-
-# Get Time Series Data
-load("forecasts.RData")
-
-# Plot Forecast
-p <- nPlot(Value ~ Time, group = "Model", type = "lineChart", data = forecasts)
-p$xAxis(
-  tickFormat = 
-    "#!
-  function(d){
-  f =  d3.time.format.utc('%Y-%m-%d');
-  return f(new Date( d*24*60*60*1000 ));
-  }
-  !#"
-)
-p$yAxis(tickFormat = "#! function(d) {return d3.format(',.0f')(d)} !#")
-p$yAxis(axisLabel = "($000)", width = 63)
-p$params$width <- 350
-p$params$height <- 400
-print(p)
+```{r echo = FALSE, out.width = 1000, fig.retina = NULL}
+knitr::include_graphics("./assets/img/train.png")
 ```
 
-*** {name: right}
-```{r prediction, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
-#Get end of period prediction
-load("prediction.RData")
 
-#Render plot
-p <- nPlot(Prediction~Model, data = prediction, type = "discreteBarChart", dom = "predictionPlot", height = 400, width = 350)
-p$set(title = "Predicted Median Home Values at End of Forecast Period")
-p$xAxis(staggerLabels = TRUE)
-p$yAxis(tickFormat = "#! function(d) {return d3.format(',.0f')(d)} !#")
-p$yAxis(axisLabel = "($000)", width = 60)
-print(p)
+--- 
 
+## Forecast Home Value Prices
+Using each forecast algorithm, predict home value prices for up to 10 years.  Forecast plots will evince predictions with confidence intervals and the summary plot will allow you to compare time series forecasts among the algorithms.
+
+```{r echo = FALSE, out.width = 1000, fig.retina = NULL}
+knitr::include_graphics("./assets/img/forecast.png")
 ```
