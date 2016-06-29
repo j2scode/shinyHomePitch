@@ -12,7 +12,7 @@ knit        : slidify::knit2slides
 
 --- 
 ## Explore Markets
-Explore over 20,000 markets by geography, home value price ranges and growth rates, then examine the distribution of home values, and discover the top markets by home value growth and, for the top growth markets, a time series of price movements since 2000.  
+Explore over 20,000 markets by geography, home value price ranges and growth rates. Examine the distribution of home values,  discover the top markets by home value growth rate and observe their price movements since 2000.  
 
 <img src="./assets/img/explorer.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="1000" />
 
